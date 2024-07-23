@@ -1,5 +1,5 @@
 const Puntos = require("../models/Puntos");
-const Puntos_usuarios = require("../models/Puntos_usuarios");
+const Puntos_Usuarios = require("../models/Puntos_usuarios");
 
 const cargarPuntos = async (req, res = response, next) => {
 
@@ -14,13 +14,13 @@ const cargarPuntos = async (req, res = response, next) => {
 
     try {
 
-        const usuario = await Puntos_usuarios.findOne({ uid: req.body.uid });
+        const usuario = await Puntos_Usuarios.findOne({ uid: req.body.uid });
 
         let NuevoUsuario = {};
         if (!usuario) {
             if (req.body.tipo !== 'resta') {
 
-                NuevoUsuario = new Puntos_usuarios(req.body)
+                NuevoUsuario = new Puntos_Usuarios(req.body)
                 await NuevoUsuario.save();
                 await Puntos.findOneAndDelete({ cantidad: req.body.cantidad, codigo: req.body.codigo });
 
@@ -59,7 +59,7 @@ const cargarPuntos = async (req, res = response, next) => {
                 ...usuario, cantidad: nuevaCantidad
             }
 
-            const usuarioActualizado = await Puntos_usuarios.findByIdAndUpdate(
+            const usuarioActualizado = await Puntos_Usuarios.findByIdAndUpdate(
                 usuario._id,
                 { cantidad: nuevaCantidad },
                 { new: true }
