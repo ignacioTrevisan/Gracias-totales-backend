@@ -44,7 +44,13 @@ const cargarPuntos = async (req, res = response, next) => {
             } else {
                 console.log('u', usuario.cantidad, 'p', req.body.cantidad)
                 console.log(usuario.cantidad < req.body.cantidad)
-                if (Number(usuario.cantidad) <= Number(req.body.cantidad)) {
+                if (isNaN(Number(usuario.cantidad)) || isNaN(Number(req.body.cantidad))) {
+                    return res.status(400).json({
+                        ok: false,
+                        msg: 'Cantidad inválida',
+                    });
+                }
+                if (Number(usuario.cantidad) < Number(req.body.cantidad)) {
                     return res.status(406).json({
                         ok: false,
                         msg: 'Puntos insuficientes',
